@@ -21,18 +21,6 @@ namespace BerrasBio.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Seats",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Seats", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Showings",
                 columns: table => new
                 {
@@ -53,26 +41,20 @@ namespace BerrasBio.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tickets",
+                name: "Seats",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IsReserved = table.Column<bool>(nullable: false),
-                    ShowingId = table.Column<int>(nullable: false),
-                    SeatId = table.Column<int>(nullable: false)
+                    Number = table.Column<int>(nullable: false),
+                    IsBooked = table.Column<bool>(nullable: false),
+                    ShowingId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tickets", x => x.Id);
+                    table.PrimaryKey("PK_Seats", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tickets_Seats_SeatId",
-                        column: x => x.SeatId,
-                        principalTable: "Seats",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Tickets_Showings_ShowingId",
+                        name: "FK_Seats_Showings_ShowingId",
                         column: x => x.ShowingId,
                         principalTable: "Showings",
                         principalColumn: "Id",
@@ -80,26 +62,18 @@ namespace BerrasBio.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Seats_ShowingId",
+                table: "Seats",
+                column: "ShowingId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Showings_MovieId",
                 table: "Showings",
                 column: "MovieId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tickets_SeatId",
-                table: "Tickets",
-                column: "SeatId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tickets_ShowingId",
-                table: "Tickets",
-                column: "ShowingId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Tickets");
-
             migrationBuilder.DropTable(
                 name: "Seats");
 

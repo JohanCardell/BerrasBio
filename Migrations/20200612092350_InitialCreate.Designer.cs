@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BerrasBio.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20200611124345_InitialCreate")]
+    [Migration("20200612092350_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,18 @@ namespace BerrasBio.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsBooked")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShowingId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ShowingId");
 
                     b.ToTable("Seats");
                 });
@@ -68,29 +79,13 @@ namespace BerrasBio.Migrations
                     b.ToTable("Showings");
                 });
 
-            modelBuilder.Entity("BerrasBio.Models.Ticket", b =>
+            modelBuilder.Entity("BerrasBio.Models.Seat", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("IsReserved")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("SeatId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ShowingId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SeatId");
-
-                    b.HasIndex("ShowingId");
-
-                    b.ToTable("Tickets");
+                    b.HasOne("BerrasBio.Models.Showing", null)
+                        .WithMany("Seats")
+                        .HasForeignKey("ShowingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BerrasBio.Models.Showing", b =>
@@ -98,21 +93,6 @@ namespace BerrasBio.Migrations
                     b.HasOne("BerrasBio.Models.Movie", "Movie")
                         .WithMany()
                         .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BerrasBio.Models.Ticket", b =>
-                {
-                    b.HasOne("BerrasBio.Models.Seat", "Seat")
-                        .WithMany("Tickets")
-                        .HasForeignKey("SeatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BerrasBio.Models.Showing", "Showing")
-                        .WithMany("Tickets")
-                        .HasForeignKey("ShowingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

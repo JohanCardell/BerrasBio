@@ -8,7 +8,9 @@ namespace BerrasBio.Models
     public class Seat
     {
         public int Id { get; set; }
+        public int Number { get; set; }
+        public bool IsBooked { get; set; } = false;
+        public int ShowingId { get; set; }
 
-        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

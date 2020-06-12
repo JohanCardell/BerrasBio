@@ -12,3 +12,11 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.available {
+    background-color:rgba(146, 241, 80, 0.40);
+}
+
+.unavailable {
+    background-color: rgba(241, 53, 53, 0.40)
+}

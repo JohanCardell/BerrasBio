@@ -23,9 +23,9 @@ namespace BerrasBio.Controllers
 
         // GET: api/Showing
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Showing>>> GetShowings()
+        public ActionResult<IEnumerable<Showing>> GetShowings()
         {
-            return await _context.Showings.ToListAsync();
+            return _context.Showings.Include(s => s.Movie).Include(s => s.Seats).ToList().OrderBy(s => s.StartTime).ToList();
         }
 
         // GET: api/Showing/5

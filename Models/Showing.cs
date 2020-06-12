@@ -15,7 +15,7 @@ namespace BerrasBio.Models
 
         public DateTime StartTime { get; set; }
 
-        public virtual ICollection<Ticket> Tickets { get; set; }
+        public virtual ICollection<Seat> Seats { get; set; } = new List<Seat>();
 
      
     }

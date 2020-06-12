@@ -19,65 +19,52 @@ namespace BerrasBio.Data
             }
 
             // Seed Movies
-            var movies = new Movie[]
+            var moviesSeed = new Movie[]
             {
                 new Movie{Title="Star Wars: A New Hope"},
                 new Movie{Title="The Matrix"},
                 new Movie{Title="The Boondock Saints"}
             };
 
-            context.AddRange(movies);
+            context.AddRange(moviesSeed);
             context.SaveChanges();
 
             // Seed showings
-            var showings = new Showing[]
+            var showingsSeed = new Showing[]
             {
                 new Showing{MovieId = 1, StartTime = DateTime.Parse("16:00")},
                 new Showing{MovieId = 2, StartTime = DateTime.Parse("18:00")},
                 new Showing{MovieId = 3, StartTime = DateTime.Parse("20:00")}
             };
 
-            context.AddRange(showings);
+            context.AddRange(showingsSeed);
             context.SaveChanges();
 
             // Seed seats
-            var seats = new List<Seat>();
-            for (int i = 0; i < 50; i++)
+            var seatsSeed = new List<Seat>();
+            for (int showingId = 1; showingId < 4; showingId++)
             {
-                seats.Add(new Seat());
-            }
-
-            context.Seats.AddRange(seats);
-            context.SaveChanges();
-
-            // Seed default tickets
-            var tickets = new List<Ticket>();
-
-            foreach (Showing s in showings)
-            {
-                for (int i = 1; i < 50+1; i++)
+                for (int seatNumber = 1; seatNumber < 51; seatNumber++)
                 {
-                    tickets.Add(new Ticket {ShowingId = s.Id, SeatId = i });
+                    seatsSeed.Add(new Seat { ShowingId = showingId, Number = seatNumber });
                 }
             }
-
-            context.Tickets.AddRange(tickets);
+            
+            context.AddRange(seatsSeed);
             context.SaveChanges();
 
             // Reserve some tickets for one showing
-            var firstMovieTicketsReservations = context.Tickets.ToList().Where(t => t.ShowingId == 1);
-
-            for (int i = 1; i < 35; i++)
+            var firstShowing = context.Showings.Find(1);
+            for (int i = 0; i < 35; i++)
             {
-                firstMovieTicketsReservations.ElementAt(i).IsReserved = true;
+                firstShowing.Seats.ElementAt(i).IsBooked = true;
             }
 
             // Reserve all tickets for another showing
-            var secondMovieTicketsReservations = context.Tickets.ToList().Where(t => t.ShowingId == 2);
-
-            foreach (Ticket t in secondMovieTicketsReservations)
+            var secondShowing = context.Showings.Find(2);
+            foreach (Seat s in secondShowing.Seats)
             {
-                t.IsReserved = true;
+                s.IsBooked = true;
             }
 
             context.SaveChanges();
