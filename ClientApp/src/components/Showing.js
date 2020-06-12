@@ -1,43 +1,59 @@
 ﻿import React, { Component } from 'react';
 
-export class Showings extends Component {
-    static displayName = Showings.name;
+export class Showing extends Component {
+    static displayName = Showing.name;
 
     constructor(props) {
         super(props);
         this.state = {
             showing: null,
-            selectedShowing: null,
+            title: null,
+            availableSeats: [],
+            isFullIndicator: null,
+            formattedStartTime: null,
             loading: true
         };
     }
 
-    
-    render() {
-            return (
-                        {props.showings.map(showing =>
-                            <tr key={showing.id}>
-                                <td>{showing.startTime}</td>
-                                <td>{showing.movie.title}</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            );
+    componentDidMount() {
+        this.populateShowingData();
     }
 
-    async populateShowingsData() {
-        const response = await fetch('api/Showing');
-        const data = await response.json();
-        console.log(data);
+    render() {
+        return (
+            <React.Fragment>
+                <td className={this.state.isFullIndicator}>{this.state.formattedStartTime}</td>
+                <td className={this.state.isFullIndicator}>{this.state.title}</td>
+                <td className={this.state.isFullIndicator}>{this.state.availableSeats.length}</td>
+            </React.Fragment >
+        );
+    }
+
+    populateShowingData() {
+        const formattedTime = new Date(this.props.showing.startTime).toLocaleTimeString()
+        const filteredSeats = this.props.showing.seats.filter(seat => seat.isBooked === false);
+        let className;
+        if (filteredSeats.length === 0) {
+            className = "unavailable";
+        } else {
+            className = "available";
+        }
+        console.log(className);
         this.setState({
-            showings: data,
+            showing: this.props.showing,
+            title: this.props.showing.movie.title,
+            availableSeats: filteredSeats,
+            isFullIndicator: className,
+            formattedStartTime: formattedTime,
             loading: false
         });
     }
 
+   
 }
+export default Showing;
 
-function FormattedDate(props) {
-    return <td{props.date.toLocaleTimeString()}</td>;
-    }
+//function FormattedStartTime(props) {
+//    const formattedTime = new Date(props.time).toLocaleTimeString();
+//    return <td>{formattedTime}</td>;
+//}

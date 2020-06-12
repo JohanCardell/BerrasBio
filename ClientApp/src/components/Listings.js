@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import Showing from './Showing';
 
 export class Listings extends Component {
     static displayName = Listings.name;
@@ -12,7 +13,7 @@ export class Listings extends Component {
     }
 
     componentDidMount() {
-        this.populateShowingsData();
+        this.populateListingsData();
     }
 
     static renderShowingsTable(showings) {
@@ -49,7 +50,7 @@ export class Listings extends Component {
         );
     }
 
-    async populateShowingsData() {
+    async populateListingsData() {
         const response = await fetch('api/Showing');
         const data = await response.json();
         console.log(data);
@@ -61,19 +62,19 @@ export class Listings extends Component {
 
 }
 
-function Showing(props) {
-    let formattedTime = new Date(props.showing.startTime).toLocaleTimeString();
-    let availableSeats = (props.showing.seats.filter(seat => seat.isBooked === false)).length;
-    let background = "available";
-    if (availableSeats === 0) {
-        background = "unavailable";
-    }
+//function Showing(props) {
+//    let formattedTime = new Date(props.showing.startTime).toLocaleTimeString();
+//    let availableSeats = (props.showing.seats.filter(seat => seat.isBooked === false)).length;
+//    let background = "available";
+//    if (availableSeats === 0) {
+//        background = "unavailable";
+//    }
 
-    return (
-        <React.Fragment>
-            <td>{formattedTime}</td>
-            <td>{props.showing.movie.title}</td>
-            <td className={background}>{availableSeats}</td>
-        </React.Fragment>
-    );
-}
+//    return (
+//        <React.Fragment>
+//            <td>{formattedTime}</td>
+//            <td>{props.showing.movie.title}</td>
+//            <td className={background}>{availableSeats}</td>
+//        </React.Fragment>
+//    );
+//}
