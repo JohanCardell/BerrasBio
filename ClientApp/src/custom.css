@@ -17,6 +17,10 @@ code {
     background-color:rgba(146, 241, 80, 0.40);
 }
 
+.limited {
+    background-color:rgba(239, 194, 18, 0.40);
+}
+
 .unavailable {
-    background-color: rgba(241, 53, 53, 0.40)
+    background-color: rgba(255, 46, 17, 0.40);
 }

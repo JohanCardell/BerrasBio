@@ -24,11 +24,14 @@ export class Listings extends Component {
                         <th>Starts at</th>
                         <th>Title</th>
                         <th>Available Seats</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {showings.map(showing =>
-                        <tr key={showing.id} >
+                        <tr key={showing.id}
+                            className={` ${showing.seats.filter(seat => seat.isBooked === false).length === 0 ? "unavailable" : null}`}
+                        >
                             <Showing showing={showing} />
                         </tr>
                     )}
@@ -50,17 +53,35 @@ export class Listings extends Component {
         );
     }
 
+    AvailabilityCheck(showing) {
+        const filteredSeats = showing.seats.filter(seat => seat.isBooked === false);
+
+        let className = "available";
+        if (filteredSeats.length === 0) {
+            className = "unavailable";
+        }
+        else if (filteredSeats.length <= showing.seats.length / 2) {
+            className = "limited";
+        }
+
+        return className;
+    }
+
     async populateListingsData() {
         const response = await fetch('api/Showing');
         const data = await response.json();
+
         console.log(data);
         this.setState({
             showings: data,
             loading: false
         });
+
+
     }
 
 }
+
 
 //function Showing(props) {
 //    let formattedTime = new Date(props.showing.startTime).toLocaleTimeString();
