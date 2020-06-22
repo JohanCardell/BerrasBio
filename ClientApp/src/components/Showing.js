@@ -1,6 +1,6 @@
-﻿import React, { Component, useState } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+﻿import React, { Component } from 'react';
+import TicketBooker from './TicketBooker';
+
 
 export class Showing extends Component {
     static displayName = Showing.name;
@@ -8,10 +8,9 @@ export class Showing extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showing: null,
-            title: null,
+            allSeats: [],
             availableSeats: [],
-            //availability: null,
+            availability: null,
             startTime: null,
         };
     }
@@ -20,75 +19,50 @@ export class Showing extends Component {
         this.populateShowingData();
     }
 
+    componentDidUpdate() {
+        this.populateShowingData();
+    }
+
     render() {
 
         return (
             <>
+            <tr key={this.props.showing.id} className={this.state.availability}>
                 <td>{this.state.startTime}</td>
-                <td>{this.state.title}</td>
+                <td>{this.props.showing.movie.title}</td>
                 <td>{this.state.availableSeats.length}</td>
                 <td>
-                    {this.state.availableSeats.length > 0 &&
-                        <TicketBooking seats={this.state.availableSeats} />
+                        {this.state.availableSeats.length > 0 &&
+                            <TicketBooker seats={this.state.allSeats} fetchMovieData={this.props.fetchMovieData}/>
                     }
                 </td>
+                </tr>
             </>
         );
     }
 
-    populateShowingData() {
-        const formattedStartTime = new Date(this.props.showing.startTime).toLocaleTimeString()
-        const filteredSeats = this.props.showing.seats.filter(seat => seat.isBooked === false);
+    async populateShowingData() {
+        const response = await fetch(`api/seat/${this.props.showing.id}`);
+        const seatsData = await response.json();
+        const filteredSeats = seatsData.filter(seat => seat.isBooked === false);
 
-        //let className = "available";
-        //if (filteredSeats.length === 0) {
-        //    className = "unavailable";
-        //}
-        //else if (filteredSeats.length <= this.props.showing.seats.length / 2) {
-        //    className = "limited";
-        //}
+        const formattedStartTime = new Date(this.props.showing.startTime).toLocaleTimeString()
+
+        let className = "available";
+        if (filteredSeats.length === 0) {
+            className = "unavailable";
+        }
+        else if (filteredSeats.length < seatsData.length / 2) {
+            className = "limited";
+        }
 
         this.setState({
-            showing: this.props.showing,
-            title: this.props.showing.movie.title,
+            allSeats: seatsData,
             availableSeats: filteredSeats,
-            //availability: className,
+            availability: className,
             startTime: formattedStartTime,
         });
     }
-
-   
-}
-
-
-function TicketBooking(props) {
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    return (
-        <>
-            <Button variant="primary" onClick={handleShow}>
-                Ticket Booking
-      </Button>
-
-            <Modal show={show} onHide={handleClose} animation={false}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </>
-    );
 }
 
 export default Showing;

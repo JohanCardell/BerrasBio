@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BerrasBio.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20200612092350_InitialCreate")]
+    [Migration("20200613115524_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,9 @@ namespace BerrasBio.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Row")
                         .HasColumnType("int");
 
                     b.Property<int>("ShowingId")

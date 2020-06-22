@@ -44,10 +44,14 @@ namespace BerrasBio.Data
             var seatsSeed = new List<Seat>();
             for (int showingId = 1; showingId < 4; showingId++)
             {
-                for (int seatNumber = 1; seatNumber < 51; seatNumber++)
+                for (int row = 1; row < 6; row++)
                 {
-                    seatsSeed.Add(new Seat { ShowingId = showingId, Number = seatNumber });
+                    for (int seatInRow = 1; seatInRow < 11; seatInRow++)
+                    {
+                        seatsSeed.Add(new Seat { ShowingId = showingId, Row = row, Number = ((10 * (row-1)) + seatInRow )});
+                    }
                 }
+               
             }
             
             context.AddRange(seatsSeed);

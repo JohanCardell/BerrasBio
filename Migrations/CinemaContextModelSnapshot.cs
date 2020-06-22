@@ -47,6 +47,9 @@ namespace BerrasBio.Migrations
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
+                    b.Property<int>("Row")
+                        .HasColumnType("int");
+
                     b.Property<int>("ShowingId")
                         .HasColumnType("int");
 

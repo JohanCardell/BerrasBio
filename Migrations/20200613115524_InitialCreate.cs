@@ -47,6 +47,7 @@ namespace BerrasBio.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Number = table.Column<int>(nullable: false),
+                    Row = table.Column<int>(nullable: false),
                     IsBooked = table.Column<bool>(nullable: false),
                     ShowingId = table.Column<int>(nullable: false)
                 },

@@ -31,6 +31,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200612092109_InitialCreate.cs" />
     <Compile Remove="Migrations\20200612092109_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200612092350_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200612092350_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

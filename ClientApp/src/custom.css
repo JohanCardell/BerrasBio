@@ -1,4 +1,6 @@
 /* Provide sufficient contrast against white background */
+
+
 a {
   color: #0366d6;
 }
@@ -24,3 +26,18 @@ code {
 .unavailable {
     background-color: rgba(255, 46, 17, 0.40);
 }
+
+.seat {
+    background-color: greenyellow;
+    width: 35px;
+    height: 35px;
+}
+
+.booked {
+    background-color: red;
+}
+
+.selected {
+    background-color: yellow;
+}
+
