@@ -41,9 +41,9 @@ export class TicketBooker extends Component {
             return `Row: ${seat.row} Number: ${seat.number}\n`;
         });
         alert(`Booking successful! Here are your tickets: \n${this.props.showing.movie.title} at ${new Date(this.props.showing.startTime).toLocaleTimeString()} \n${tickets.join('')}`);
-        this.setState({
-            selectedSeatsList: []
-        })
+        //this.setState({
+        //    selectedSeatsList: []
+        //})
     }
 
     //concatSeatDetails(seat) {
@@ -65,7 +65,8 @@ export class TicketBooker extends Component {
 
     handleClose = () => {
         this.setState({
-            showModal: false
+            showModal: false,
+            selectedSeatsList: []
         })
     }
 
