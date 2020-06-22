@@ -33,7 +33,10 @@ export class Showing extends Component {
                 <td>{this.state.availableSeats.length}</td>
                 <td>
                         {this.state.availableSeats.length > 0 &&
-                            <TicketBooker seats={this.state.allSeats} fetchMovieData={this.props.fetchMovieData}/>
+                            <TicketBooker
+                            seats={this.state.allSeats}
+                            showing={this.props.showing}
+                            fetchMovieData={this.props.fetchMovieData} />
                     }
                 </td>
                 </tr>

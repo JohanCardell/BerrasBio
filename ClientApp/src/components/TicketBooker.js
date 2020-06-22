@@ -12,10 +12,10 @@ export class TicketBooker extends Component {
         this.state = {
             showModal: false,
             selectedSeatsList: [],
-            confirmationMessage: "Tickets\n"
+            //confirmationMessage: "Tickets\n"
         };
         this.commitBooking = this.commitBooking.bind(this);
-        this.concatSeatDetails = this.concatSeatDetails.bind(this);
+        //this.concatSeatDetails = this.concatSeatDetails.bind(this);
     }
 
     onSeatClick = (selectedSeat) => {
@@ -34,26 +34,33 @@ export class TicketBooker extends Component {
      
     commitBooking() {
         this.bookTickets(this.state.selectedSeatsList);
-        this.state.selectedSeatsList.forEach(this.concatSeatDetails);
+        //this.state.selectedSeatsList.forEach(this.concatSeatDetails);
+        //this.state.selectedSeatsList.map(this.concatSeatDetails);
         //this.props.fetchMovieData();
-        alert(this.state.confirmationMessage);
+        let tickets = this.state.selectedSeatsList.map(function(seat) {
+            return `Row: ${seat.row} Number: ${seat.number}\n`;
+        });
+        alert(`Booking successful! Here are your tickets: \n${this.props.showing.movie.title} at ${new Date(this.props.showing.startTime).toLocaleTimeString()} \n${tickets.join('')}`);
         this.setState({
-            selectedSeatsList: [],
-            confirmationMessage: "Tickets\n"
+            selectedSeatsList: []
         })
     }
 
-    concatSeatDetails(seat) {
-        if (this.state.confirmationMessage === null) {
-            this.setState({
-                confirmationMessage: "Tickets\n"
-            });
-        }
-        let updatedMessage = this.state.confirmationMessage + `Row: ${seat.row} Number: ${seat.number} \n`;
-        console.log(updatedMessage);
-        this.setState({
-            confirmationMessage: updatedMessage
-        });
+    //concatSeatDetails(seat) {
+    //    if (this.state.confirmationMessage === null) {
+    //        this.setState({
+    //            confirmationMessage: "Tickets\n"
+    //        });
+    //    }
+    //    let updatedMessage = this.state.confirmationMessage + `Row: ${seat.row} Number: ${seat.number} \n`;
+    //    console.log(updatedMessage);
+    //    this.setState({
+    //        confirmationMessage: updatedMessage
+    //    });
+    //}
+
+    concatSeas(seat) {
+        return `Row: ${seat.row} Number: ${seat.number} \n`;
     }
 
     handleClose = () => {
