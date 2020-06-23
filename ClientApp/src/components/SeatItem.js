@@ -10,14 +10,9 @@ export class SeatItem extends Component {
         this.state = {
             isSelected: false
         };
-
-        this.handleClick = this.handleClick.bind(this)
     }
 
-    handleClick(seat) {
-        this.props.onSeatClick(seat);
-    }
-
+   
     setSelected = () => {
         this.setState({
             isSelected: !this.state.isSelected
@@ -32,7 +27,7 @@ export class SeatItem extends Component {
                 disabled={seat.isBooked}
                 className={` mr-2 seat ${this.state.isSelected ? 'selected' : ''} ${seat.isBooked ? 'booked' : ''} `}
                 onClick={() => {
-                    this.handleClick(seat);
+                    this.props.onSeatClick(seat);
                     this.setSelected();
                 }}
             >

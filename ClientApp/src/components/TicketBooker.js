@@ -19,17 +19,19 @@ export class TicketBooker extends Component {
     }
 
     onSeatClick = (selectedSeat) => {
-        const { selectedSeatsList } = this.state;
-        const indexOfSelectedSeat = selectedSeatsList.indexOf(selectedSeat);
-        let updatedList = new Array(...selectedSeatsList);
+        //const { selectedSeatsList } = this.state; myArray.map(function(e) { return e.hello; }).indexOf('stevie')
+        const indexOfSelectedSeat = this.state.selectedSeatsList.map(function (seat) {
+            return seat.id;
+        }).indexOf(selectedSeat.id);
+        let updatedList = new Array(...this.state.selectedSeatsList);
         if (indexOfSelectedSeat < 0) {
-            updatedList.push(selectedSeat)
+            updatedList.push(selectedSeat);
         }
         else {
-            updatedList.splice(indexOfSelectedSeat, 1)
+            updatedList.splice(indexOfSelectedSeat, 1);
         }
         this.setState({ selectedSeatsList: updatedList });
-        console.log(selectedSeatsList);
+        console.log(this.state.selectedSeatsList);
     }
      
     commitBooking() {
