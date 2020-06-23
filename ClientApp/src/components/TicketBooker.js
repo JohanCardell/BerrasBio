@@ -12,7 +12,7 @@ export class TicketBooker extends Component {
             selectedSeatsList: []
         };
 
-        this.commitBooking = this.bookSeats.bind(this);
+        this.bookSeats = this.bookSeats.bind(this);
     }
 
     onSeatClick = (selectedSeat) => {
@@ -84,7 +84,7 @@ export class TicketBooker extends Component {
                         <Button variant="secondary" onClick={this.handleClose}>
                             Close
                     </Button>
-                        <Button variant="primary" hidden={selectedSeatsList.length == 0} onClick={() => {
+                        <Button variant="primary" hidden={selectedSeatsList.length === 0} onClick={() => {
                             this.handleClose();
                             this.bookSeats(this, selectedSeatsList);
                         }}>
