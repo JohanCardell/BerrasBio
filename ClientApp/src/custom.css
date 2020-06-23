@@ -28,9 +28,10 @@ code {
 }
 
 .seat {
+    display: inline-block;
     background-color: greenyellow;
-    width: 35px;
-    height: 35px;
+    width: 2em;
+    height: 2em;
 }
 
 .booked {

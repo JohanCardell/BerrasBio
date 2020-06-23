@@ -1,9 +1,7 @@
 ﻿using BerrasBio.Models;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace BerrasBio.Data
 {
@@ -15,7 +13,7 @@ namespace BerrasBio.Data
 
             if (context.Showings.Any())
             {
-                return; 
+                return;
             }
 
             // Seed Movies
@@ -48,12 +46,11 @@ namespace BerrasBio.Data
                 {
                     for (int seatInRow = 1; seatInRow < 11; seatInRow++)
                     {
-                        seatsSeed.Add(new Seat { ShowingId = showingId, Row = row, Number = ((10 * (row-1)) + seatInRow )});
+                        seatsSeed.Add(new Seat { ShowingId = showingId, Row = row, Number = ((10 * (row - 1)) + seatInRow) });
                     }
                 }
-               
             }
-            
+
             context.AddRange(seatsSeed);
             context.SaveChanges();
 

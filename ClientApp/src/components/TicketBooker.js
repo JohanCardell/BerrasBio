@@ -3,68 +3,54 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import SeatGrid from './SeatGrid';
 
-import Form from 'react-bootstrap/Form';
-
 export class TicketBooker extends Component {
     static displayName = TicketBooker.name;
     constructor(props) {
         super(props);
         this.state = {
             showModal: false,
-            selectedSeatsList: [],
-            //confirmationMessage: "Tickets\n"
+            selectedSeatsList: []
         };
-        this.commitBooking = this.commitBooking.bind(this);
-        //this.concatSeatDetails = this.concatSeatDetails.bind(this);
+
+        this.commitBooking = this.bookSeats.bind(this);
     }
 
     onSeatClick = (selectedSeat) => {
-        //const { selectedSeatsList } = this.state; myArray.map(function(e) { return e.hello; }).indexOf('stevie')
-        const indexOfSelectedSeat = this.state.selectedSeatsList.map(function (seat) {
+        const { selectedSeatsList } = this.state;
+
+        const indexOfSelectedSeat = selectedSeatsList.map(function (seat) {
             return seat.id;
         }).indexOf(selectedSeat.id);
-        let updatedList = new Array(...this.state.selectedSeatsList);
+
+        let updatedList = new Array(...selectedSeatsList);
+
         if (indexOfSelectedSeat < 0) {
             updatedList.push(selectedSeat);
         }
         else {
             updatedList.splice(indexOfSelectedSeat, 1);
         }
+
         this.setState({ selectedSeatsList: updatedList });
-        console.log(this.state.selectedSeatsList);
     }
      
-    commitBooking() {
-        this.bookTickets(this.state.selectedSeatsList);
-        //this.state.selectedSeatsList.forEach(this.concatSeatDetails);
-        //this.state.selectedSeatsList.map(this.concatSeatDetails);
-        //this.props.fetchMovieData();
-        let tickets = this.state.selectedSeatsList.map(function(seat) {
-            return `Row: ${seat.row} Number: ${seat.number}\n`;
+    bookSeats() {
+        const { selectedSeatsList } = this.state;
+        const { showing } = this.props;
+
+        this.updateDabase(selectedSeatsList);
+
+        let sortedSeats = selectedSeatsList.sort(function (a, b) {
+            return a.number - b.number;
         });
-        alert(`Booking successful! Here are your tickets: \n${this.props.showing.movie.title} at ${new Date(this.props.showing.startTime).toLocaleTimeString()} \n${tickets.join('')}`);
-        //this.setState({
-        //    selectedSeatsList: []
-        //})
+
+        let tickets = sortedSeats.map(function(seat) {
+            return `Row: ${seat.row} Seat: ${seat.number}\n`;
+        });
+
+        alert(`Booking confirmed!\n${showing.movie.title} at ${new Date(showing.startTime).toLocaleTimeString()} \n${tickets.join('')}`);
     }
-
-    //concatSeatDetails(seat) {
-    //    if (this.state.confirmationMessage === null) {
-    //        this.setState({
-    //            confirmationMessage: "Tickets\n"
-    //        });
-    //    }
-    //    let updatedMessage = this.state.confirmationMessage + `Row: ${seat.row} Number: ${seat.number} \n`;
-    //    console.log(updatedMessage);
-    //    this.setState({
-    //        confirmationMessage: updatedMessage
-    //    });
-    //}
-
-    concatSeas(seat) {
-        return `Row: ${seat.row} Number: ${seat.number} \n`;
-    }
-
+   
     handleClose = () => {
         this.setState({
             showModal: false,
@@ -79,14 +65,15 @@ export class TicketBooker extends Component {
     }
 
     render() {
-    
+        const { selectedSeatsList, showModal } = this.state;
+
         return (
             <>
                 <Button variant="primary" onClick={this.handleShow}>
                     Ticket Booking
                 </Button>
 
-                <Modal className="align-items-center text-centered" centered={true} show={this.state.showModal} onHide={this.handleClose} animation={true}>
+                <Modal className="align-items-center text-centered" centered="true" show={showModal} onHide={this.handleClose} animation={true}>
                     <Modal.Header closeButton>
                         <Modal.Title>Select seats</Modal.Title>
                     </Modal.Header>
@@ -97,9 +84,9 @@ export class TicketBooker extends Component {
                         <Button variant="secondary" onClick={this.handleClose}>
                             Close
                     </Button>
-                        <Button variant="primary" onClick={() => {
+                        <Button variant="primary" hidden={selectedSeatsList.length == 0} onClick={() => {
                             this.handleClose();
-                            this.commitBooking(this, this.state.selectedSeatsList);
+                            this.bookSeats(this, selectedSeatsList);
                         }}>
                             Confirm
                     </Button>
@@ -109,21 +96,16 @@ export class TicketBooker extends Component {
         );
     }
 
-    async bookTickets(seats) {
+    async updateDabase(seats) {
         const response = await fetch(`api/seat`, {
             method: "PUT",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(seats
-                //id: seat.Id,
-                //number: seat.Number,
-                //row: seat.Row,
-                //isBooked: true,
-                //showingId: seat.ShowingId
-                )
+            body: JSON.stringify(seats)
         });
+        console.log(response);
     }
 }
 

@@ -43,15 +43,13 @@ export class Listings extends Component {
     }
 
     render() {
-
-        // TODO if(isValid)
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
             : Listings.renderShowingsTable(this.state.showings);
 
         return (
             <div>
-                <h1 id="tabelLabel" >Current showings</h1>
+                <h1 id="tabelLabel" >Berras bio</h1>
                 {contents}
             </div>
         );
